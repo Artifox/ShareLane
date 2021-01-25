@@ -46,16 +46,7 @@ public class ShareLane {
 
     @Test
     public static void positiveSignIn(){
-        open(REGISTER_URL);
-        $(By.name("zip_code")).sendKeys("11111");
-        $(By.xpath("/html/body/center/table/tbody/tr[5]/td/table/tbody/tr[2]/td/table/tbody/tr[3]/td[2]/input")).click();
-        $(By.name("first_name")).sendKeys("John");
-        $(By.name("last_name")).sendKeys("Doe");
-        $(By.name("email")).sendKeys("jdoe@gmail.com");
-        $(By.name(("password1"))).sendKeys("12345");
-        $(By.name(("password2"))).sendKeys("12345");
-        $(By.xpath("/html/body/center/table/tbody/tr[5]/td/table/tbody/tr[2]/td/table/tbody/tr[6]/td[2]/input")).click();
-
+        signIn();
         String result = $(By.className("confirmation_message")).getText();
         Assert.assertEquals(result, "Account is created!");
     }
@@ -71,4 +62,31 @@ public class ShareLane {
         Assert.assertEquals(result, "Oops, error on page. Some of your fields have invalid data or email was previously used");
     }
 
+    @Test
+    public static void positiveLogIn(){
+        signIn();
+        String email = $(By.xpath("/html/body/center/table/tbody/tr[6]/td/table/tbody/tr[4]/td/table/tbody/tr[1]/td[2]/b")).getText();
+        String password = $(By.xpath("/html/body/center/table/tbody/tr[6]/td/table/tbody/tr[4]/td/table/tbody/tr[2]/td[2]")).getText();
+        $(By.xpath("/html/body/center/table/tbody/tr[6]/td/table/tbody/tr[2]/td/p/a")).click();
+        $(By.name("email")).sendKeys(email);
+        $(By.name("password")).sendKeys(password);
+        $(By.xpath("/html/body/center/table/tbody/tr[3]/td/table/tbody/tr/td[3]/input")).click();
+
+        String result = $(By.className("user")).getText().substring(0, 5);
+        result.substring(0, 4);
+        Assert.assertEquals(result, "Hello");
+    }
+
+
+    private static void signIn() {
+        open(REGISTER_URL);
+        $(By.name("zip_code")).sendKeys("11111");
+        $(By.xpath("/html/body/center/table/tbody/tr[5]/td/table/tbody/tr[2]/td/table/tbody/tr[3]/td[2]/input")).click();
+        $(By.name("first_name")).sendKeys("John");
+        $(By.name("last_name")).sendKeys("Doe");
+        $(By.name("email")).sendKeys("jdoe@gmail.com");
+        $(By.name(("password1"))).sendKeys("12345");
+        $(By.name(("password2"))).sendKeys("12345");
+        $(By.xpath("/html/body/center/table/tbody/tr[5]/td/table/tbody/tr[2]/td/table/tbody/tr[6]/td[2]/input")).click();
+    }
 }
