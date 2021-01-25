@@ -20,7 +20,7 @@ public class ShareLane {
 
     @Test
     public static void zipCodeEmpty(){
-        open("https://www.sharelane.com/cgi-bin/register.py");
+        open(REGISTER_URL);
         $(By.xpath("/html/body/center/table/tbody/tr[5]/td/table/tbody/tr[2]/td/table/tbody/tr[3]/td[2]/input")).click();
         String result = $(By.className("error_message")).getText();
         Assert.assertEquals(result, "Oops, error on page. ZIP code should have 5 digits");
@@ -28,11 +28,20 @@ public class ShareLane {
 
     @Test
     public static void zipCodeFiveDigits(){
-        open("https://www.sharelane.com/cgi-bin/register.py");
+        open(REGISTER_URL);
         $(By.name("zip_code")).sendKeys("11111");
         $(By.xpath("/html/body/center/table/tbody/tr[5]/td/table/tbody/tr[2]/td/table/tbody/tr[3]/td[2]/input")).click();
         String result = $(By.xpath("/html/body/center/table/tbody/tr[5]/td/table/tbody/tr[2]/td/table/tbody/tr[1]/td[1]/p")).getText();
         Assert.assertEquals(result, "First Name*");
+    }
+
+    @Test
+    public static void zipCodeSixDigits(){
+        open(REGISTER_URL);
+        $(By.name("zip_code")).sendKeys("111111");
+        $(By.xpath("/html/body/center/table/tbody/tr[5]/td/table/tbody/tr[2]/td/table/tbody/tr[3]/td[2]/input")).click();
+        String result = $(By.className("error_message")).getText();
+        Assert.assertEquals(result, "Oops, error on page. ZIP code should have 5 digits");
     }
 
 }
